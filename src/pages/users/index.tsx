@@ -6,11 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { fetchUsers } from "../../entities/user/api/users";
 import { User } from "../../entities/user/model/types";
 import { clearToken } from "../../shared/lib/auth";
+import { UserCreateModal } from "../../features/user-create/ui/UserCreateModal";
+
 
 const { Title } = Typography;
 
 export function UsersPage() {
   const navigate = useNavigate();
+  const [createOpen, setCreateOpen] = React.useState(false);
+
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["users"],
@@ -21,10 +25,8 @@ export function UsersPage() {
     clearToken();
     navigate("/login", { replace: true });
   };
-
-  const handleCreate = () => {
-    notification.info({ message: "Модалка создания будет в следующей ветке 🙂" });
-  };
+  
+  const handleCreate = () => setCreateOpen(true);
 
   const handleOpenEdit = (user: User) => {
     notification.info({ message: `Открыть редактирование: ${user.name}` });
@@ -92,6 +94,9 @@ export function UsersPage() {
           loading={isLoading}
           pagination={{ pageSize: 8 }}
         />
+
+        <UserCreateModal open={createOpen} onClose={() => setCreateOpen(false)} />
+
       </div>
     </div>
   );
