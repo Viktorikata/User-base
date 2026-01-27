@@ -7,6 +7,7 @@ import { fetchUsers } from "../../entities/user/api/users";
 import { User } from "../../entities/user/model/types";
 import { clearToken } from "../../shared/lib/auth";
 import { UserCreateModal } from "../../features/user-create/ui/UserCreateModal";
+import { UserEditModal } from "../../features/user-edit/ui/UserEditModal";
 
 
 const { Title } = Typography;
@@ -14,7 +15,8 @@ const { Title } = Typography;
 export function UsersPage() {
   const navigate = useNavigate();
   const [createOpen, setCreateOpen] = React.useState(false);
-
+  const [editOpen, setEditOpen] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["users"],
@@ -28,9 +30,11 @@ export function UsersPage() {
   
   const handleCreate = () => setCreateOpen(true);
 
-  const handleOpenEdit = (user: User) => {
-    notification.info({ message: `Открыть редактирование: ${user.name}` });
-  };
+    const handleOpenEdit = (user: User) => {
+    setSelectedUser(user);
+    setEditOpen(true);
+    };
+
 
   const columns = [
     {
@@ -96,7 +100,14 @@ export function UsersPage() {
         />
 
         <UserCreateModal open={createOpen} onClose={() => setCreateOpen(false)} />
-
+        <UserEditModal
+            open={editOpen}
+            user={selectedUser}
+            onClose={() => {
+                setEditOpen(false);
+                setSelectedUser(null);
+            }}
+            />
       </div>
     </div>
   );
