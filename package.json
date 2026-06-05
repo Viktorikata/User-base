@@ -2,10 +2,13 @@
   "name": "user-base",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": "https://viktorikata.github.io/User-base",
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +28,7 @@
     "@types/react": "^16.14.68",
     "@types/react-dom": "^16.9.25",
     "css-loader": "^7.1.2",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.6",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.4",
